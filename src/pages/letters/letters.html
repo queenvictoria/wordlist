@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>letters</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-buttons>
+      <span *ngFor="let i of index | async">
+        <button ion-button (click)="filterBy(i.$value)">{{i.$value}}</button>
+      </span>
+    </ion-buttons>
+
+    <ion-list [virtualScroll]="words">
+      <ion-item *virtualItem="let item" >
+        <p><strong> {{ item.lx }} </strong></p>
+        <p> {{ item.de }} </p>
+      </ion-item>
+    </ion-list>
+
+</ion-content>

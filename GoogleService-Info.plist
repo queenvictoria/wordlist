@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>288003980045-glb897388tujtovmcu1fstaa68am32p2.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.288003980045-glb897388tujtovmcu1fstaa68am32p2</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDGh0Btd-s1ccNV4TRlkxAi14kR5UR76pc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>288003980045</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ionicframework.somali441675</string>
+	<key>PROJECT_ID</key>
+	<string>somali-2c680</string>
+	<key>STORAGE_BUCKET</key>
+	<string>somali-2c680.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:288003980045:ios:93ce1b19bc11f036</string>
+	<key>DATABASE_URL</key>
+	<string>https://somali-2c680.firebaseio.com</string>
+</dict>
+</plist>
