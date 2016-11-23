@@ -1,17 +1,11 @@
-import { NgModule } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { NgModule } from '@angular/core'
+import { IonicApp, IonicModule } from 'ionic-angular'
+import { MyApp } from './app.component'
 
-import { LetterPage } from '../pages/letter/letter'
-import { LettersPage } from '../pages/letters/letters'
-import { WordPage } from '../pages/word/word'
+import { HomePage } from '../pages/home/home'
 
 // providers
-import { AuthService } from '../providers/auth-service'
-import { DataService } from '../providers/data-service'
-import { Util } from '../providers/util'
-
+import { DbService } from '../providers/db-service'
 
 // Import the AF2 Module
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2'
@@ -32,10 +26,7 @@ const myFirebaseAuthConfig = {
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    LetterPage,
-    LettersPage,
-    WordPage
+    HomePage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -44,15 +35,10 @@ const myFirebaseAuthConfig = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    LetterPage,
-    LettersPage,
-    WordPage
+    HomePage
   ],
   providers: [
-    AuthService,
-    DataService,
-    Util
+    DbService
   ]
 })
 export class AppModule {}
