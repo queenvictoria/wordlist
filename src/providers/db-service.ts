@@ -41,32 +41,13 @@ export class DbService {
       console.log( data )
 
       if (data.length > 0) {
-
-        //  Two approaches:
-
-        //  1. save each entry individually
-
-        // pouch has trouble storing the data directly from firebase,
-        // maybe something to do with the $key key?
-        // so copy the objects without that
-
-        // let dataCopy = data.map( (e) => {
-        //   return {
-        //       "_id": e.$key,
-        //       "initial": e.initial,
-        //       "word": e.word
-        //   }
-        // })
-
-        //  2. stringify the data from firebase and store that
+        // stringify the data from firebase and store as a single item
         let entries = JSON.stringify(data)
-
         this.pdb.put( {"_id": "words", "entries": entries} ).then( (result) => {
           let t1 = performance.now()
           console.log("allDocs took " + (t1 - t0) + " milliseconds")
           console.log(result)
         }).catch( (err) => console.log(err))
-
       }
     })
 
