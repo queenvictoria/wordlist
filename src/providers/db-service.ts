@@ -22,63 +22,45 @@ export class DbService {
   getFromPouch() {
     console.log("DbService | getFromPouch")
     return new Promise((resolve, reject) => {
-
-      this.pdb.get('words').then( (doc) => {
-
-        console.log(doc)
-
-        resolve(JSON.parse(doc.entries))
-      }).catch( (err) => {
-        reject(err)
-      })
-
+      this.pdb.get("words")
+        .then(  (doc) => resolve(JSON.parse(doc.entries)))
+        .catch( (err) => reject(err) )
     })
   }
-
-
 
   getFromFb() {
     console.log( "DbService | getFromFb" )
+    return new Promise((resolve, reject) => {
+      firebase.database().ref('/entriesTest/')
+          .once('value')
+          .then( (snapshot) => {
+            let doc = {"_id":"words", "entries":JSON.stringify(snapshot.val())}
+            this.insertOrUpdate( doc ).then( (res) => {
+                          console.log("now", res)
+                          resolve( "mememe" )
+                          })
 
-    // get the words
-    this.fdb = this.af.database.list('/entriesTest')
-    // subscribe and then we can deal with the results
-    this.fdb.subscribe( (data) => {
 
-      if (data.length > 0) {
-        console.log("got entries from frb")
-
-        // stringify the data from firebase and store as a single item
-        // quicker to read it back in and parse,
-        // than to store and retrieve tens of thousands of entries
-        let entries =  JSON.stringify(data)
-        this.createOrUpdateThenShowAll ( entries )
-
-      }
+          })
+          .catch( (err) => reject(err) )
     })
   }
 
+  insertOrUpdate(doc) {
 
+    console.log("starting insertOrUpdate")
 
- createOrUpdateThenShowAll ( doc ) {
-
-    this.pdb.get ( doc._id )
-        .then ( (docOriginal) => {
-            console.log('updating');
-            doc._rev = docOriginal._rev;
-            return this.pdb.put( doc );
-            })
-
-        .catch( (error) => {
-            console.log('adding');
-
-            return this.pdb.post( {"_id":"words", "entries":doc} );
-            })
-
-        .then( (info) => {
-            console.log("id of record: " + info.id);
+    return new Promise((resolve, reject) => {
+      this.pdb.get(doc._id)
+      .then( (_doc) => {
+        console.log("in new promise then")
+          doc._rev = _doc._rev
+          resolve(this.pdb.put(doc))
+      }).catch( (err) => {
+          console.log(err)
+          resolve(this.pdb.put(doc))
+      })
     })
-}
-
+  }
 
 }

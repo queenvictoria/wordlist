@@ -44,11 +44,15 @@ export class HomePage {
   getFromPouch() {
     console.log("HomePage | click get from pouch")
     this.dbService.getFromPouch()
+      .then( (res) => console.log("got from pouch", res) )
+      .catch( (err) => { console.log("getting from pouch failed", err) })
   }
 
   getFromFb() {
     console.log("HomePage | click get from firebase")
     this.dbService.getFromFb()
+      .then( (res) => console.log("got from firebase", res) )
+      .catch( (err) => { console.log("getting from firebase failed", err) })
   }
 
   reloadUI() {

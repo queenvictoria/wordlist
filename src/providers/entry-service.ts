@@ -39,8 +39,7 @@ export class EntryService {
     let entries = this.entries
     if (term && term.trim() != '') {
       entries = this.entries.filter( (el) => {
-        return ((el.lx.toLowerCase().indexOf( term.trim().toLowerCase() ) > -1) ||
-                (el.de.toLowerCase().indexOf( term.trim().toLowerCase() ) > -1))
+        return ((el.lx.toLowerCase().indexOf( term.trim().toLowerCase() ) > -1) || (el.de.toLowerCase().indexOf( term.trim().toLowerCase() ) > -1))
       })
     }
     this._entries$.next( entries )
