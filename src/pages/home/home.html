@@ -3,17 +3,27 @@
     <ion-title>
       Somali Firebase / PouchDB test
     </ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="getFromFb()">frb</button>
+      <button ion-button (click)="getFromPouch()">pdb</button>
+      <button ion-button (click)="reloadUI()">refresh UI</button>
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <p>
-    <button ion-button (click)="getFromFb()">get from firebase</button>
-    <button ion-button (click)="getFromPouch()">get from pouch</button>
-  </p>
 
-  <ion-list [virtualScroll]="words">
+  <ion-searchbar
+  #term
+  (keyup)="search(term.value)"
+  (ionClear)="searchClear()"
+  ></ion-searchbar>
+
+
+  <ion-list [virtualScroll]="entries$ | async">
     <ion-item *virtualItem="let word" >
       <p><strong> {{ word.lx }} </strong></p>
       <p> {{ word.de }} </p>

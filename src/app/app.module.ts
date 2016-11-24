@@ -6,6 +6,7 @@ import { HomePage } from '../pages/home/home'
 
 // providers
 import { DbService } from '../providers/db-service'
+import { EntryService } from '../providers/entry-service'
 
 // Import the AF2 Module
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2'
@@ -38,7 +39,8 @@ const myFirebaseAuthConfig = {
     HomePage
   ],
   providers: [
-    DbService
+    DbService,
+    EntryService
   ]
 })
 export class AppModule {}

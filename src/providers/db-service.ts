@@ -4,6 +4,7 @@ import { AngularFire } from "angularfire2"
 
 import PouchDB from 'pouchdb'
 
+
 @Injectable()
 export class DbService {
 
@@ -13,51 +14,71 @@ export class DbService {
   constructor(
     public af: AngularFire
     ) {
-
-    console.log("db service");
-
+    console.log("DbService");
     // create or open the db
     this.pdb = new PouchDB('entries');
   }
 
   getFromPouch() {
-    console.log("db service | getFromPouch")
-    return new Promise((resolve) => {
-      this.pdb.get( 'words' ).then( (result) => {
-        resolve(JSON.parse(result.entries))
+    console.log("DbService | getFromPouch")
+    return new Promise((resolve, reject) => {
+
+      this.pdb.get('words').then( (doc) => {
+
+        console.log(doc)
+
+        resolve(JSON.parse(doc.entries))
+      }).catch( (err) => {
+        reject(err)
       })
+
     })
   }
 
-  getFromFb() {
-    console.log( "get from firebase" )
-    let t0 = performance.now()
-    // get the words
-    this.fdb = this.af.database.list('/')
 
+
+  getFromFb() {
+    console.log( "DbService | getFromFb" )
+
+    // get the words
+    this.fdb = this.af.database.list('/entriesTest')
     // subscribe and then we can deal with the results
     this.fdb.subscribe( (data) => {
 
-      console.log( data )
-
       if (data.length > 0) {
+        console.log("got entries from frb")
+
         // stringify the data from firebase and store as a single item
-        let entries = JSON.stringify(data)
-        this.pdb.put( {"_id": "words", "entries": entries} ).then( (result) => {
-          let t1 = performance.now()
-          console.log("allDocs took " + (t1 - t0) + " milliseconds")
-          console.log(result)
-        }).catch( (err) => console.log(err))
+        // quicker to read it back in and parse,
+        // than to store and retrieve tens of thousands of entries
+        let entries =  JSON.stringify(data)
+        this.createOrUpdateThenShowAll ( entries )
+
       }
     })
-
   }
 
 
 
+ createOrUpdateThenShowAll ( doc ) {
 
-  add(something) {
-    return this.pdb.post(something)
-  }
+    this.pdb.get ( doc._id )
+        .then ( (docOriginal) => {
+            console.log('updating');
+            doc._rev = docOriginal._rev;
+            return this.pdb.put( doc );
+            })
+
+        .catch( (error) => {
+            console.log('adding');
+
+            return this.pdb.post( {"_id":"words", "entries":doc} );
+            })
+
+        .then( (info) => {
+            console.log("id of record: " + info.id);
+    })
+}
+
 
 }

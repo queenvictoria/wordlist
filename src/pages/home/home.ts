@@ -1,6 +1,9 @@
 import { Component } from '@angular/core'
 import { NavController } from 'ionic-angular'
 import { DbService } from "../../providers/db-service"
+import { EntryService } from "../../providers/entry-service"
+
+import { Observable } from "rxjs/Observable";
 
 
 @Component({
@@ -9,27 +12,47 @@ import { DbService } from "../../providers/db-service"
 })
 export class HomePage {
 
-  words: any
+  entries$: Observable<any[]>
 
   constructor(
     public dbService: DbService,
+    public entryService: EntryService,
     public navCtrl: NavController
     ) {
 
-    console.log("home.ts");
+    console.log("HomePage");
 
   }
 
+  ngOnInit() {
+    console.log("HomePage | ngOnInit");
+    this.entries$ = this.entryService.entries$;
+    console.log( this.entries$ );
+    this.entryService.loadAll();
+  }
+
+  search (term) {
+    this.entryService.search(term);
+  }
+
+  searchClear () {
+    this.entryService.searchClear();
+  }
+
+  // buttons
+
   getFromPouch() {
-    console.log("home | get from pouch")
-    this.dbService.getFromPouch().then( (data) => {
-      this.words = data
-    })
+    console.log("HomePage | click get from pouch")
+    this.dbService.getFromPouch()
   }
 
   getFromFb() {
-    console.log("home | get from firebase")
+    console.log("HomePage | click get from firebase")
     this.dbService.getFromFb()
+  }
+
+  reloadUI() {
+    this.entryService.loadAll();
   }
 
 }
