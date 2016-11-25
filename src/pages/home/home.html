@@ -4,10 +4,9 @@
       Somali Firebase / PouchDB test
     </ion-title>
 
-    <ion-buttons end>
-      <button ion-button (click)="getFromFb()">frb</button>
-      <button ion-button (click)="getFromPouch()">pdb</button>
-      <button ion-button (click)="reloadUI()">refresh UI</button>
+    <ion-buttons>
+      <button ion-button (click)="changeLanguage('SOM')">Somali</button>
+      <button ion-button (click)="changeLanguage('ENG')">English</button>
     </ion-buttons>
 
   </ion-navbar>
@@ -16,17 +15,35 @@
 <ion-content padding>
 
 
-  <ion-searchbar
-  #term
-  (keyup)="search(term.value)"
-  (ionClear)="searchClear()"
-  ></ion-searchbar>
+  <ion-buttons>
+    <button ion-button (click)="getFromFb()">frb</button>
+    <button ion-button (click)="getFromPouch()">pdb</button>
+    <button ion-button (click)="reloadUI()">refresh UI</button>
+  </ion-buttons>
 
+  <ion-searchbar
+    #term
+    (keyup)="search(term.value)"
+    (ionClear)="searchClear()"
+    ></ion-searchbar>
+
+
+  Showing {{ lang }} {{ langOrder }}
 
   <ion-list [virtualScroll]="entries$ | async">
     <ion-item *virtualItem="let word" >
-      <p><strong> {{ word.lx }} </strong></p>
-      <p> {{ word.de }} </p>
+
+      <div *ngIf="lang=='SOM'">
+        <p><strong> {{ word.lx }} </strong></p>
+        <p> {{ word.de }} </p>
+      </div>
+
+      <div *ngIf="lang=='ENG'">
+        <p><strong> {{ word.de }} </strong></p>
+        <p> {{ word.lx }} </p>
+      </div>
+
+
     </ion-item>
   </ion-list>
 

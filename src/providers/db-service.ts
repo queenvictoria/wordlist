@@ -47,9 +47,6 @@ export class DbService {
   }
 
   insertOrUpdate(doc) {
-
-    console.log("starting insertOrUpdate")
-
     return new Promise((resolve, reject) => {
       this.pdb.get(doc._id)
       .then( (_doc) => {

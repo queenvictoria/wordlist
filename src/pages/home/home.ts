@@ -5,7 +5,6 @@ import { EntryService } from "../../providers/entry-service"
 
 import { Observable } from "rxjs/Observable";
 
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -13,6 +12,8 @@ import { Observable } from "rxjs/Observable";
 export class HomePage {
 
   entries$: Observable<any[]>
+  lang: string
+  langOrder: string
 
   constructor(
     public dbService: DbService,
@@ -20,19 +21,21 @@ export class HomePage {
     public navCtrl: NavController
     ) {
 
-    console.log("HomePage");
+    console.log("HomePage")
+
+    this.lang = "ENG"
 
   }
 
   ngOnInit() {
     console.log("HomePage | ngOnInit");
-    this.entries$ = this.entryService.entries$;
-    console.log( this.entries$ );
-    this.entryService.loadAll();
+    this.entries$ = this.entryService.entries$
+    console.log( this.entries$ )
+    this.entryService.loadAll()
   }
 
   search (term) {
-    this.entryService.search(term);
+    this.entryService.search(term)
   }
 
   searchClear () {
@@ -59,4 +62,14 @@ export class HomePage {
     this.entryService.loadAll();
   }
 
+  changeLanguage(lang) {
+    this.lang = lang
+    if (lang == 'SOM') this.langOrder = 'lx'
+    else this.langOrder = 'de'
+
+  }
+
+
+
 }
+
