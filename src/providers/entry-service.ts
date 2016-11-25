@@ -49,4 +49,15 @@ export class EntryService {
     this._entries$.next( this.entries )
   }
 
+  sortEntries( lang ) {
+
+    this.entries.sort(function(a, b) {
+        var textA = a[lang].toUpperCase();
+        var textB = b[lang].toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
+    this._entries$.next( this.entries )
+  }
+
 }
+

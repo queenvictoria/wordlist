@@ -14,6 +14,8 @@ export class HomePage {
   entries$: Observable<any[]>
   lang: string
   langOrder: string
+  somaliButtonColour: string = "primary"
+  englishButtonColour: string = "default"
 
   constructor(
     public dbService: DbService,
@@ -63,13 +65,19 @@ export class HomePage {
   }
 
   changeLanguage(lang) {
+
     this.lang = lang
-    if (lang == 'SOM') this.langOrder = 'lx'
-    else this.langOrder = 'de'
 
+    // reorder the entries array by sorting on different keys
+    if (lang == 'SOM') {
+      this.entryService.sortEntries('lx')
+      this.somaliButtonColour = "primary"
+      this.englishButtonColour = "default"
+    } else {
+      this.entryService.sortEntries('de')
+      this.somaliButtonColour = "default"
+      this.englishButtonColour = "primary"
+    }
   }
-
-
-
 }
 

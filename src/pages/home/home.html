@@ -4,16 +4,25 @@
       Somali Firebase / PouchDB test
     </ion-title>
 
-    <ion-buttons>
-      <button ion-button (click)="changeLanguage('SOM')">Somali</button>
-      <button ion-button (click)="changeLanguage('ENG')">English</button>
+    <ion-buttons end>
+      <button
+        ion-button
+        [color]="somaliButtonColour"
+        (click)="changeLanguage('SOM')">
+        Somali
+      </button>
+      <button
+        ion-button
+        [color]="englishButtonColour"
+        (click)="changeLanguage('ENG')">
+        English
+      </button>
     </ion-buttons>
 
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
 
   <ion-buttons>
     <button ion-button (click)="getFromFb()">frb</button>
@@ -26,9 +35,6 @@
     (keyup)="search(term.value)"
     (ionClear)="searchClear()"
     ></ion-searchbar>
-
-
-  Showing {{ lang }} {{ langOrder }}
 
   <ion-list [virtualScroll]="entries$ | async">
     <ion-item *virtualItem="let word" >
