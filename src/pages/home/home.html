@@ -1,21 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Somali Firebase / PouchDB test
+      Somali English dictionary
     </ion-title>
-
     <ion-buttons end>
-      <button
-        ion-button
-        [color]="somaliButtonColour"
-        (click)="changeLanguage('SOM')">
-        Somali
-      </button>
-      <button
-        ion-button
-        [color]="englishButtonColour"
-        (click)="changeLanguage('ENG')">
-        English
+      <button ion-button>
+        <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>
 
@@ -24,33 +14,17 @@
 
 <ion-content padding>
 
-  <ion-buttons>
-    <button ion-button (click)="getFromFb()">frb</button>
-    <button ion-button (click)="getFromPouch()">pdb</button>
-    <button ion-button (click)="reloadUI()">refresh UI</button>
-  </ion-buttons>
+  <div *ngIf="syncStatus=='ready'">
+    <p>checking for local data</p>
+  </div>
 
-  <ion-searchbar
-    #term
-    (keyup)="search(term.value)"
-    (ionClear)="searchClear()"
-    ></ion-searchbar>
+  <div *ngIf="syncStatus=='local'">
+    <p>ready to go</p>
+  </div>
 
-  <ion-list [virtualScroll]="entries$ | async">
-    <ion-item *virtualItem="let word" >
-
-      <div *ngIf="lang=='SOM'">
-        <p><strong> {{ word.lx }} </strong></p>
-        <p> {{ word.de }} </p>
-      </div>
-
-      <div *ngIf="lang=='ENG'">
-        <p><strong> {{ word.de }} </strong></p>
-        <p> {{ word.lx }} </p>
-      </div>
-
-
-    </ion-item>
-  </ion-list>
+  <div *ngIf="syncStatus=='sync'">
+    <p>getting from firebase</p>
+    <p>() loading animation</p>
+  </div>
 
 </ion-content>

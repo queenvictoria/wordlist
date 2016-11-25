@@ -3,6 +3,7 @@ import { IonicApp, IonicModule } from 'ionic-angular'
 import { MyApp } from './app.component'
 
 import { HomePage } from '../pages/home/home'
+import { WordlistPage } from '../pages/wordlist/wordlist'
 
 // providers
 import { DbService } from '../providers/db-service'
@@ -27,7 +28,8 @@ const myFirebaseAuthConfig = {
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    WordlistPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -36,7 +38,8 @@ const myFirebaseAuthConfig = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    WordlistPage
   ],
   providers: [
     DbService,

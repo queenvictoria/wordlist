@@ -2,8 +2,7 @@ import { Component } from '@angular/core'
 import { NavController } from 'ionic-angular'
 import { DbService } from "../../providers/db-service"
 import { EntryService } from "../../providers/entry-service"
-
-import { Observable } from "rxjs/Observable";
+import { WordlistPage } from "../wordlist/wordlist"
 
 @Component({
   selector: 'page-home',
@@ -11,11 +10,7 @@ import { Observable } from "rxjs/Observable";
 })
 export class HomePage {
 
-  entries$: Observable<any[]>
-  lang: string
-  langOrder: string
-  somaliButtonColour: string = "primary"
-  englishButtonColour: string = "default"
+  syncStatus: string
 
   constructor(
     public dbService: DbService,
@@ -25,23 +20,68 @@ export class HomePage {
 
     console.log("HomePage")
 
-    this.lang = "ENG"
-
   }
 
-  ngOnInit() {
-    console.log("HomePage | ngOnInit");
-    this.entries$ = this.entryService.entries$
-    console.log( this.entries$ )
-    this.entryService.loadAll()
+  ionViewWillEnter() {
+    this.syncStatus = 'ready'
+    setTimeout(() => {
+      this.syncData()
+    }, 1500);
   }
 
-  search (term) {
-    this.entryService.search(term)
-  }
+  syncData() {
+    console.log("HomePage | starting syncData")
+    /*
+    first, get from pouch
+    if we have content,
+      start an update from firebase and goto the wordlist
 
-  searchClear () {
-    this.entryService.searchClear();
+    no content in pouch then
+      start an update from firebase
+      get from pouch
+      then go to wordlist
+    */
+
+    this.dbService.getFromPouch()
+      .then( () => {
+        this.syncStatus = 'local'
+        console.log("HomePage | got from pouch OK")
+        console.log("HomePage | now update from fb")
+        console.log("HomePage | and goto the wordlist")
+        // start firebase
+        this.dbService.getFromFb().then((entries) => {
+          console.log("HomePage | got from fb OK")
+          console.log("HomePage | now save all")
+          // save to pouch
+          this.entryService.saveAll(entries)
+        })
+
+        // move to wordlist automatically if this is the first time through
+        setTimeout(() => {
+          console.log("HomePage | now goto wordlist")
+          this.navCtrl.setRoot(WordlistPage)
+        }, 500)
+
+      })
+      .catch( (err) => {
+        this.syncStatus = 'sync'
+        console.log("getting from pouch failed", err)
+        console.log("get from firebase")
+        console.log("save to pouch")
+        console.log("go to the wordlist")
+        // start firebase
+        this.dbService.getFromFb().then( (entries) => {
+        // save to pouch
+        this.entryService.saveAll(entries).then(() => {
+          // move to wordlist
+          this.navCtrl.setRoot(WordlistPage)
+          })
+
+        })
+
+      })
+
+
   }
 
   // buttons
@@ -61,23 +101,12 @@ export class HomePage {
   }
 
   reloadUI() {
-    this.entryService.loadAll();
+    this.entryService.loadAll()
   }
 
-  changeLanguage(lang) {
 
-    this.lang = lang
-
-    // reorder the entries array by sorting on different keys
-    if (lang == 'SOM') {
-      this.entryService.sortEntries('lx')
-      this.somaliButtonColour = "primary"
-      this.englishButtonColour = "default"
-    } else {
-      this.entryService.sortEntries('de')
-      this.somaliButtonColour = "default"
-      this.englishButtonColour = "primary"
-    }
+  goto(page) {
+    if (page == "wordlist") this.navCtrl.push(WordlistPage)
   }
 }
 

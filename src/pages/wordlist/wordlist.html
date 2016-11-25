@@ -1,0 +1,51 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Somali English dictionary wordlist</ion-title>
+
+    <ion-buttons end>
+      <button
+        ion-button
+        [color]="somaliButtonColour"
+        (click)="changeLanguage('SOM')">
+        Somali
+      </button>
+      <button
+        ion-button
+        [color]="englishButtonColour"
+        (click)="changeLanguage('ENG')">
+        English
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-searchbar
+    #term
+    (keyup)="search(term.value)"
+    (ionClear)="searchClear()"
+    ></ion-searchbar>
+
+  <ion-list [virtualScroll]="entries$ | async">
+    <ion-item *virtualItem="let word" >
+
+      <div *ngIf="lang=='SOM'">
+        <p><strong> {{ word.lx }} </strong></p>
+        <p> {{ word.de }} </p>
+      </div>
+
+      <div *ngIf="lang=='ENG'">
+        <p><strong> {{ word.de }} </strong></p>
+        <p> {{ word.lx }} </p>
+      </div>
+
+
+    </ion-item>
+  </ion-list>
+
+</ion-content>

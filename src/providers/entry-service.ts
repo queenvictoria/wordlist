@@ -26,6 +26,16 @@ export class EntryService {
     }).catch( (err) => console.log(err) )
   }
 
+  saveAll(entries) {
+    console.log("EntryService | saveAll")
+    let doc = {"_id":"words", "entries":JSON.stringify(entries)}
+    return new Promise((resolve, reject) => {
+      this.dbService.insertOrUpdate( doc )
+        .then(  (doc) => {console.log("saveAll will resolve"); resolve(doc)})
+        .catch( (err) => {console.log("saveAll will reject");  reject(err)})
+    })
+  }
+
   getByID(id) {
     this.loadAll()
     let entry = this.entries.filter( (el) => {
@@ -33,7 +43,6 @@ export class EntryService {
     })
     return entry[0]
   }
-
 
   search(term: string) {
     let entries = this.entries
@@ -50,7 +59,6 @@ export class EntryService {
   }
 
   sortEntries( lang ) {
-
     this.entries.sort(function(a, b) {
         var textA = a[lang].toUpperCase();
         var textB = b[lang].toUpperCase();
