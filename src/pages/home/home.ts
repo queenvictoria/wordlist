@@ -26,11 +26,12 @@ export class HomePage {
     this.syncStatus = 'ready'
     setTimeout(() => {
       this.syncData()
-    }, 1500);
+    }, 500); // set this to smooth the UX
   }
 
   syncData() {
     console.log("HomePage | starting syncData")
+
     /*
     first, get from pouch
     if we have content,
@@ -60,7 +61,7 @@ export class HomePage {
         setTimeout(() => {
           console.log("HomePage | now goto wordlist")
           this.navCtrl.setRoot(WordlistPage)
-        }, 500)
+        }, 500) // set this to smooth the UX
 
       })
       .catch( (err) => {
@@ -76,9 +77,7 @@ export class HomePage {
           // move to wordlist
           this.navCtrl.setRoot(WordlistPage)
           })
-
         })
-
       })
 
 
@@ -87,14 +86,14 @@ export class HomePage {
   // buttons
 
   getFromPouch() {
-    console.log("HomePage | click get from pouch")
+    // console.log("HomePage | click get from pouch")
     this.dbService.getFromPouch()
       .then( (res) => console.log("got from pouch", res) )
       .catch( (err) => { console.log("getting from pouch failed", err) })
   }
 
   getFromFb() {
-    console.log("HomePage | click get from firebase")
+    // console.log("HomePage | click get from firebase")
     this.dbService.getFromFb()
       .then( (res) => console.log("got from firebase", res) )
       .catch( (err) => { console.log("getting from firebase failed", err) })

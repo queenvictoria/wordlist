@@ -1,9 +1,10 @@
 // entry service
 import { Injectable } from "@angular/core"
 import { BehaviorSubject } from "rxjs/BehaviorSubject"
+import { Subject } from "rxjs/Subject"
+import { Observable } from 'rxjs/Observable';
 
 import { DbService } from './db-service'
-
 
 @Injectable()
 export class EntryService {
@@ -11,13 +12,24 @@ export class EntryService {
   _entries$: BehaviorSubject<any[]> = new BehaviorSubject( [] )
   entries: any
 
-  constructor( public dbService: DbService ) {}
+  _language$: BehaviorSubject<string> = new BehaviorSubject("SOM")
+
+  constructor( public dbService: DbService ) {
+  }
+
+  get language() {
+    return this._language$.asObservable()
+  }
+
+  setLanguage(language) {
+    this._language$.next( language )
+    this.sortEntries( language )
+  }
 
   get entries$() {
     return this._entries$.asObservable()
   }
 
-  // TODO: if there's an error 'missing' we could trigger get from firebase
   loadAll() {
     console.log("EntryService | loadAll")
     this.dbService.getFromPouch().then( (data) => {
@@ -44,6 +56,10 @@ export class EntryService {
     return entry[0]
   }
 
+  getIndexOfWord( word ) {
+    return this.entries.findIndex(x => x==word)
+  }
+
   search(term: string) {
     let entries = this.entries
     if (term && term.trim() != '') {
@@ -58,10 +74,11 @@ export class EntryService {
     this._entries$.next( this.entries )
   }
 
-  sortEntries( lang ) {
+  sortEntries( language ) {
+    let orderBy = (language == 'SOM') ? 'lx' : 'de'
     this.entries.sort(function(a, b) {
-        var textA = a[lang].toUpperCase();
-        var textB = b[lang].toUpperCase();
+        var textA = a[orderBy].toUpperCase();
+        var textB = b[orderBy].toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     });
     this._entries$.next( this.entries )

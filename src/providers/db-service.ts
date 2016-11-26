@@ -10,17 +10,21 @@ export class DbService {
 
   fdb: any // firebase
   pdb: any // pouchdb
+  entriesKey: string = "/entriesTest/" // or "/entries/"
 
   constructor(
     public af: AngularFire
     ) {
+
     console.log("DbService");
+
     // create or open the db
     this.pdb = new PouchDB('entries');
   }
 
   getFromPouch() {
     console.log("DbService | getFromPouch")
+
     return new Promise((resolve, reject) => {
       this.pdb.get("words")
         .then(  (doc) => resolve(JSON.parse(doc.entries)))
@@ -30,8 +34,9 @@ export class DbService {
 
   getFromFb() {
     console.log( "DbService | getFromFb" )
+
     return new Promise((resolve, reject) => {
-      firebase.database().ref('/entriesTest/')
+      firebase.database().ref(this.entriesKey)
           .once('value')
           .then(  (snapshot) => resolve( snapshot.val() ))
           .catch( (err) => reject(err) )

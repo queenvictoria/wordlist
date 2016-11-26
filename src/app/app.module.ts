@@ -4,6 +4,7 @@ import { MyApp } from './app.component'
 
 import { HomePage } from '../pages/home/home'
 import { WordlistPage } from '../pages/wordlist/wordlist'
+import { WordPage } from '../pages/word/word'
 
 // providers
 import { DbService } from '../providers/db-service'
@@ -29,7 +30,8 @@ const myFirebaseAuthConfig = {
   declarations: [
     MyApp,
     HomePage,
-    WordlistPage
+    WordlistPage,
+    WordPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -39,7 +41,8 @@ const myFirebaseAuthConfig = {
   entryComponents: [
     MyApp,
     HomePage,
-    WordlistPage
+    WordlistPage,
+    WordPage
   ],
   providers: [
     DbService,

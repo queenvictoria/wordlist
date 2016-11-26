@@ -2,8 +2,9 @@ import { Component } from '@angular/core'
 import { NavController } from 'ionic-angular'
 import { DbService } from "../../providers/db-service"
 import { EntryService } from "../../providers/entry-service"
-
 import { Observable } from "rxjs/Observable";
+
+import { WordPage } from "../word/word"
 
 @Component({
   selector: 'page-wordlist',
@@ -12,10 +13,9 @@ import { Observable } from "rxjs/Observable";
 export class WordlistPage {
 
   entries$: Observable<any[]>
-  lang: string
-  langOrder: string
-  somaliButtonColour: string = "primary"
-  englishButtonColour: string = "default"
+  language: string
+  somaliButtonColour: string
+  englishButtonColour: string
 
   constructor(
     public dbService: DbService,
@@ -25,7 +25,10 @@ export class WordlistPage {
 
     console.log("WordlistPage")
 
-    this.lang = "ENG"
+    this.entryService.language.subscribe( (language) => {
+          this.language = language
+          this.doButtonColours(language)
+        })
 
   }
 
@@ -34,6 +37,10 @@ export class WordlistPage {
     this.entries$ = this.entryService.entries$
     this.entryService.loadAll()
   }
+
+  ionViewDidLoad() {
+  }
+
 
   search (term) {
     this.entryService.search(term)
@@ -44,6 +51,12 @@ export class WordlistPage {
   }
 
   // buttons
+
+  gotoWord(word) {
+    console.log("WordlistPage | gotoWord word", word)
+    let index = this.entryService.getIndexOfWord(word)
+    this.navCtrl.push(WordPage, {"index": index})
+  }
 
   getFromPouch() {
     console.log("HomePage | click get from pouch")
@@ -63,17 +76,15 @@ export class WordlistPage {
     this.entryService.loadAll();
   }
 
-  changeLanguage(lang) {
-
-    this.lang = lang
-
-    // reorder the entries array by sorting on different keys
-    if (lang == 'SOM') {
-      this.entryService.sortEntries('lx')
+  setLanguage(language) {
+    this.entryService.setLanguage(language)
+    console.log("setLanguage", language)
+  }
+  doButtonColours(language) {
+    if (language == 'SOM') {
       this.somaliButtonColour = "primary"
       this.englishButtonColour = "default"
     } else {
-      this.entryService.sortEntries('de')
       this.somaliButtonColour = "default"
       this.englishButtonColour = "primary"
     }

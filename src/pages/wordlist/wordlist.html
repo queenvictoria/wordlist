@@ -1,21 +1,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Somali English dictionary wordlist</ion-title>
+    <ion-title>Somali English dictionary</ion-title>
 
     <ion-buttons end>
       <button
         ion-button
         [color]="somaliButtonColour"
-        (click)="changeLanguage('SOM')">
+        (click)="setLanguage('SOM')">
         Somali
       </button>
       <button
         ion-button
         [color]="englishButtonColour"
-        (click)="changeLanguage('ENG')">
+        (click)="setLanguage('ENG')">
         English
       </button>
+
     </ion-buttons>
 
   </ion-navbar>
@@ -32,18 +33,17 @@
     ></ion-searchbar>
 
   <ion-list [virtualScroll]="entries$ | async">
-    <ion-item *virtualItem="let word" >
+    <ion-item *virtualItem="let word" (click)="gotoWord(word)">
 
-      <div *ngIf="lang=='SOM'">
-        <p><strong> {{ word.lx }} </strong></p>
-        <p> {{ word.de }} </p>
+      <div *ngIf="language=='SOM'">
+        <p>lx: <strong> {{ word.lx }} </strong></p>
+        <p>de: {{ word.de }} </p>
       </div>
 
-      <div *ngIf="lang=='ENG'">
-        <p><strong> {{ word.de }} </strong></p>
-        <p> {{ word.lx }} </p>
+      <div *ngIf="language=='ENG'">
+        <p>de: <strong> {{ word.de }} </strong></p>
+        <p>ls: {{ word.lx }} </p>
       </div>
-
 
     </ion-item>
   </ion-list>

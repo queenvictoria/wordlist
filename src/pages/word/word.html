@@ -1,0 +1,31 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Somali English dictionary</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div class="swiper-container main" #mainSwipe>
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let word of entries$ | async">
+
+
+          <ion-list *ngIf="language=='SOM'">
+            <ion-item>lx: {{ word.lx }}</ion-item>
+            <ion-item>de: {{ word.de }}</ion-item>
+          </ion-list>
+
+          <ion-list *ngIf="language=='ENG'">
+            <ion-item>de: {{ word.de }}</ion-item>
+            <ion-item>lx: {{ word.lx }}</ion-item>
+          </ion-list>
+
+        </div>
+      </div>
+  </div>
+
+</ion-content>
