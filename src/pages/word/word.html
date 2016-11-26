@@ -11,7 +11,7 @@
 
   <div class="swiper-container main" #mainSwipe>
       <div class="swiper-wrapper">
-        <div class="swiper-slide" *ngFor="let word of entries$ | async">
+        <div class="swiper-slide" *ngFor="let word of entriesForSwiper">
 
 
           <ion-list *ngIf="language=='SOM'">

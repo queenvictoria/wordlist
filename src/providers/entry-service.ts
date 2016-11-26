@@ -1,8 +1,6 @@
 // entry service
 import { Injectable } from "@angular/core"
 import { BehaviorSubject } from "rxjs/BehaviorSubject"
-import { Subject } from "rxjs/Subject"
-import { Observable } from 'rxjs/Observable';
 
 import { DbService } from './db-service'
 
@@ -17,7 +15,7 @@ export class EntryService {
   constructor( public dbService: DbService ) {
   }
 
-  get language() {
+  get language$() {
     return this._language$.asObservable()
   }
 

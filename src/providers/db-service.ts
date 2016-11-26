@@ -10,7 +10,7 @@ export class DbService {
 
   fdb: any // firebase
   pdb: any // pouchdb
-  entriesKey: string = "/entriesTest/" // or "/entries/"
+  entriesKey: string = "/entries/" // or "/entriesTest/"
 
   constructor(
     public af: AngularFire
@@ -27,7 +27,10 @@ export class DbService {
 
     return new Promise((resolve, reject) => {
       this.pdb.get("words")
-        .then(  (doc) => resolve(JSON.parse(doc.entries)))
+        .then( (doc) => {
+          // clear null values
+          resolve( JSON.parse(doc.entries).filter( (e) => e !== null ) )
+        })
         .catch( (err) => reject(err) )
     })
   }

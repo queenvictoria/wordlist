@@ -25,22 +25,21 @@ export class WordlistPage {
 
     console.log("WordlistPage")
 
-    this.entryService.language.subscribe( (language) => {
+    console.log("WordlistPage | subscribe to language$")
+    this.entryService.language$.subscribe( (language) => {
           this.language = language
+          console.log("have this.language", this.language)
           this.doButtonColours(language)
         })
 
-  }
-
-  ngOnInit() {
-    console.log("WordlistPage | ngOnInit");
+    console.log("WordlistPage | subscribe to entries$")
     this.entries$ = this.entryService.entries$
+    this.entryService.entries$.subscribe( (entries) => {
+      console.log("got entries", entries)
+    } )
     this.entryService.loadAll()
-  }
 
-  ionViewDidLoad() {
   }
-
 
   search (term) {
     this.entryService.search(term)
