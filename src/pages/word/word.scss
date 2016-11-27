@@ -1,3 +1,11 @@
 page-word {
   ion-label { white-space: normal }
+
+  .swiper-slide {
+    flex-direction: column;
+  }
+
+  .row  {
+    padding: 1em
+  }
 }

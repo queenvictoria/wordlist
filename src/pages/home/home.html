@@ -1,15 +1,10 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Somali English dictionary
-    </ion-title>
-    <ion-buttons end>
-      <button ion-button>
-        <ion-icon name="settings"></ion-icon>
-      </button>
-    </ion-buttons>
 
+  <ion-navbar>
+    <ion-title>Somali English dictionary</ion-title>
+    <language-chooser></language-chooser>
   </ion-navbar>
+
 </ion-header>
 
 <ion-content padding>
@@ -18,13 +13,34 @@
     <p>checking for local data</p>
   </div>
 
-  <div *ngIf="syncStatus=='local'">
-    <p>ready to go</p>
-  </div>
-
   <div *ngIf="syncStatus=='sync'">
     <p>getting from firebase</p>
-    <p>() loading animation</p>
   </div>
+
+  <div *ngIf="showAlphabet">
+
+
+    <button ion-button (click)="gotoWordlist('all')"> all </button>
+
+    <div *ngIf="language=='SOM'">
+      <button
+        ion-button
+        *ngFor="let letter of uniqueLettersSOM"
+       (click)="gotoWordlist(letter)">
+       {{letter}}
+     </button>
+   </div>
+
+    <div *ngIf="language=='ENG'">
+      <button
+        ion-button
+        *ngFor="let letter of uniqueLettersENG"
+       (click)="gotoWordlist(letter)">
+       {{letter}}
+     </button>
+   </div>
+  </div>
+
+
 
 </ion-content>

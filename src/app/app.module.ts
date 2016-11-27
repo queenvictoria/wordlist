@@ -6,6 +6,8 @@ import { HomePage } from '../pages/home/home'
 import { WordlistPage } from '../pages/wordlist/wordlist'
 import { WordPage } from '../pages/word/word'
 
+import { LanguageChooserComponent } from "../components/language-chooser/language-chooser"
+
 // providers
 import { DbService } from '../providers/db-service'
 import { EntryService } from '../providers/entry-service'
@@ -31,7 +33,8 @@ const myFirebaseAuthConfig = {
     MyApp,
     HomePage,
     WordlistPage,
-    WordPage
+    WordPage,
+    LanguageChooserComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),

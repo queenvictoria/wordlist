@@ -10,20 +10,20 @@ export class DbService {
 
   fdb: any // firebase
   pdb: any // pouchdb
-  entriesKey: string = "/entries/" // or "/entriesTest/"
+  entriesKey: string = "/entriesTest/" // or "/entries/"
 
   constructor(
     public af: AngularFire
     ) {
 
-    console.log("DbService");
+    // console.log("DbService");
 
     // create or open the db
     this.pdb = new PouchDB('entries');
   }
 
   getFromPouch() {
-    console.log("DbService | getFromPouch")
+    // console.log("DbService | getFromPouch")
 
     return new Promise((resolve, reject) => {
       this.pdb.get("words")

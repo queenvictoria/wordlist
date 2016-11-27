@@ -11,6 +11,10 @@ import { WordlistPage } from "../wordlist/wordlist"
 export class HomePage {
 
   syncStatus: string
+  language: string
+  showAlphabet: boolean
+  uniqueLettersSOM: string[]
+  uniqueLettersENG: string[]
 
   constructor(
     public dbService: DbService,
@@ -18,94 +22,124 @@ export class HomePage {
     public navCtrl: NavController
     ) {
 
-    console.log("HomePage")
+    // console.log("HomePage")
 
+    // console.log("WordlistPage | subscribe to language$")
+    this.entryService.language$.subscribe( (language) => {
+          this.language = language
+          console.log("language changed", language)
+        })
+    this.showAlphabet = false
   }
 
   ionViewWillEnter() {
     this.syncStatus = 'ready'
     setTimeout(() => {
       this.syncData()
-    }, 500); // set this to smooth the UX
+    }, 0); // set this to smooth the UX
   }
 
   syncData() {
-    console.log("HomePage | starting syncData")
-
     /*
     first, get from pouch
     if we have content,
       start an update from firebase and goto the wordlist
-
     no content in pouch then
       start an update from firebase
       get from pouch
       then go to wordlist
     */
-
     this.dbService.getFromPouch()
-      .then( () => {
+      .then( (entries) => {
         this.syncStatus = 'local'
-        console.log("HomePage | got from pouch OK")
-        console.log("HomePage | now update from fb")
-        console.log("HomePage | and goto the wordlist")
-        // start firebase
-        this.dbService.getFromFb().then((entries) => {
-          console.log("HomePage | got from fb OK")
-          console.log("HomePage | now save all")
-          // save to pouch
-          this.entryService.saveAll(entries)
-        })
-
-        // move to wordlist automatically if this is the first time through
+        // this.dbService.getFromFb().then((entries) => {
+        // this.entryService.saveAll(entries)
+        // })
         setTimeout(() => {
-          console.log("HomePage | now goto wordlist")
-          this.navCtrl.setRoot(WordlistPage)
-        }, 500) // set this to smooth the UX
-
+          this.whatToDoNext(entries)
+        }, 0) // set this to smooth the UX
       })
       .catch( (err) => {
         this.syncStatus = 'sync'
-        console.log("getting from pouch failed", err)
-        console.log("get from firebase")
-        console.log("save to pouch")
-        console.log("go to the wordlist")
         // start firebase
         this.dbService.getFromFb().then( (entries) => {
         // save to pouch
-        this.entryService.saveAll(entries).then(() => {
-          // move to wordlist
-          this.navCtrl.setRoot(WordlistPage)
+        this.entryService.saveAll(entries).then((entries) => {
+          this.whatToDoNext(entries)
           })
         })
       })
-
-
   }
+
+  whatToDoNext(entries) {
+    // could go to the wordlist
+    // this.navCtrl.setRoot(WordlistPage)
+    // or we could show alphabet buttons
+    this.showAlphabet = true
+    this.getAlphabetSOM(entries)
+    this.getAlphabetENG(entries)
+  }
+
+
+  getAlphabetSOM(entries) {
+    console.log("getting alphabets SOM")
+    let letters = []
+    letters = entries.map((e) => {
+      let i = e.lx.substring(0, 1).toUpperCase()
+      return i
+    })
+    this.uniqueLettersSOM = this.uniques(letters).sort()
+    console.log("uniqueLettersSOM", this.uniqueLettersSOM)
+  }
+
+
+
+  getAlphabetENG(entries) {
+    console.log("getting alphabets ENG")
+    let letters = []
+    letters = entries.map((e) => {
+      let i = e.de.substring(0, 1).toUpperCase()
+      return i
+    })
+    this.uniqueLettersENG = this.uniques(letters).sort()
+    console.log("uniqueLettersENG", this.uniqueLettersENG)
+  }
+
+  uniques(arr) {
+      let a = []
+      for (let i=0, l=arr.length; i<l; i++)
+          if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
+              a.push(arr[i])
+      return a
+  }
+
 
   // buttons
 
   getFromPouch() {
     // console.log("HomePage | click get from pouch")
     this.dbService.getFromPouch()
-      .then( (res) => console.log("got from pouch", res) )
-      .catch( (err) => { console.log("getting from pouch failed", err) })
+      // .then( (res) => console.log("got from pouch", res) )
+      // .catch( (err) => { console.log("getting from pouch failed", err) })
   }
 
   getFromFb() {
     // console.log("HomePage | click get from firebase")
     this.dbService.getFromFb()
-      .then( (res) => console.log("got from firebase", res) )
-      .catch( (err) => { console.log("getting from firebase failed", err) })
+      // .then( (res) => console.log("got from firebase", res) )
+      // .catch( (err) => { console.log("getting from firebase failed", err) })
   }
-
-  reloadUI() {
-    this.entryService.loadAll()
-  }
-
 
   goto(page) {
     if (page == "wordlist") this.navCtrl.push(WordlistPage)
   }
+
+  gotoWordlist(letter) {
+    // console.log("WordlistPage | gotoWord word", word)
+    this.navCtrl.push(WordlistPage, {"letter":letter})
+  }
+
+
+
 }
 

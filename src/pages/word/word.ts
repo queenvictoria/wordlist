@@ -12,11 +12,15 @@ import * as Swiper from 'swiper'
 export class WordPage {
 
   entries$: Observable<any[]>
-  entries: any
-  entriesForSwiper: any
+  entriesLength: any
+  entriesForSwiper: any = []
+  entriesForSwiperStr: string // just for testing
   language: string
   mainSwiper: any
-  mainSwiperOptions = { initialSlide: 2 }
+  mainSwiperOptions: any = {
+    initialSlide: 0,
+    observer: true
+  }
   index: number
 
   @ViewChild('mainSwipe') mainSwipe
@@ -26,58 +30,75 @@ export class WordPage {
     public navCtrl: NavController,
     public navParams: NavParams
     ) {
+
+    // console.log("WordPage")
+
+    // get the current language
     this.entryService.language$.subscribe( (data) => this.language = data )
 
+    // the index of the selected word
     this.index = navParams.get("index")
-    console.log("WordPage | this.index", this.index)
-    console.log(this.index)
+    console.log("init", this.index)
 
+    // update the initial slide
+    if (this.index >= 1) this.mainSwiperOptions.initialSlide = 1
+
+    console.log("initialSlide", this.mainSwiperOptions.initialSlide)
     // make a temp array with our selected word and the ones either side of it
     this.entryService.entries$.subscribe( (entries) => {
-      this.entries = entries
-      this.setEntriesForSwiper()
-      console.log(this.entriesForSwiper)
+      this.entriesLength = entries.length
     })
 
   }
 
   ngOnInit() {
-    console.log("WordPage | ngOnInit")
   }
 
   ionViewDidLoad() {
-    console.log('WordPage | ionViewDidLoad')
-
+    console.log("this.mainSwiperOptions",this.mainSwiperOptions)
     this.mainSwiper = new Swiper(this.mainSwipe.nativeElement, this.mainSwiperOptions)
-    console.log("this.mainSwiper.slides", this.mainSwiper.slides)
-    console.log("this.mainSwiper.activeIndex", this.mainSwiper.activeIndex)
 
-    this.mainSwiper.on('onSlideNextEnd', (e) => {
-      ++this.index
-      console.log("this.index NOW", this.index)
-      console.log("adding", this.entries[this.index+1].lx)
+    this.setEntriesForSwiper()
 
-      this.entriesForSwiper.push( this.entries[this.index+1] )
-      this.mainSwiper.update()
-      console.log(this.entriesForSwiper)
-      console.log("this.mainSwiper.slides", this.mainSwiper.slides)
-      console.log("this.mainSwiper.activeIndex", this.mainSwiper.activeIndex)
+    this.mainSwiper.on('onTransitionEnd', (e) => {
+      if (e.swipeDirection == 'next') {
+        // back to the list if we are at the end
+        if ( this.index+1 == this.entriesLength ) this.navCtrl.pop()
+        this.index++
+        if ( this.index < this.entriesLength-1 ) this.mainSwiper.appendSlide( this.dodgyInnerHTML(this.index+1) )
+        this.mainSwiper.removeSlide(0)
+      }
+      if (e.swipeDirection == 'prev') {
+        // back to the list if we are at the beginning
+        if ( this.index == 0 ) this.navCtrl.pop()
+        this.index--
+        if ( this.index >= 1 ) this.mainSwiper.prependSlide( this.dodgyInnerHTML(this.index-1) )
+        this.mainSwiper.removeSlide(this.mainSwiper.slides.length)
+      }
+      console.log("onTransitionEnd **", e.swipeDirection)
     })
-
   }
 
   setEntriesForSwiper() {
-    this.entriesForSwiper = [
-       this.entries[this.index-2],
-       this.entries[this.index-1],
-       this.entries[this.index],
-       this.entries[this.index+1],
-       this.entries[this.index+2]
-    ]
-    console.log("** doing setEntriesForSwiper")
-    console.log("this.index", this.index)
-    console.log("this.entriesForSwiper", this.entriesForSwiper)
+    console.log("setEntriesForSwiper this.index", this.index)
+    if ( this.index >= 1 ) this.mainSwiper.appendSlide( this.dodgyInnerHTML(this.index - 1) )
+    this.mainSwiper.appendSlide( this.dodgyInnerHTML(this.index) )
+    if ( this.index < this.entriesLength-1 ) this.mainSwiper.appendSlide( this.dodgyInnerHTML(this.index + 1) )
+ }
 
+  dodgyInnerHTML(index) {
+    console.log('dodgyInnerHTML', index)
+    let word = this.entryService.getByIndex(index)
+    if ( this.language == 'SOM' ) {
+      return `<div class='swiper-slide'>
+            <div class="row"><strong> lx: ` + word.lx + ` </strong></div>
+            <div class="row">de: ` + word.de + `</div>
+        </div>`
+    } else {
+      return `<div class='swiper-slide'>
+            <div class="row"><strong> de: ` + word.de + ` </strong></div>
+            <div class="row">lx: ` + word.lx + `</div>
+        </div>`
+    }
   }
-
 }
