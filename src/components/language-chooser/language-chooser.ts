@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { Component } from '@angular/core';
 import { EntryService } from "../../providers/entry-service"
 
 @Component({
@@ -17,21 +16,21 @@ export class LanguageChooserComponent {
     ) {
 
     // console.log("LanguageChooser | subscribe to language$")
+
     this.entryService.language$.subscribe( (language) => {
           this.language = language
-          console.log("have this.language", this.language)
-          this.doButtonColours(language)
+          console.log("LanguageChooser | has this.language", this.language)
+          this.setButtonColours(language)
         })
-
   }
-
 
   setLanguage(language) {
-    console.log("setLanguage", language)
-    this.doButtonColours(language)
+    console.log("LanguageChooser | setLanguage", language)
+    this.setButtonColours(language)
     this.entryService.setLanguage(language)
   }
-  doButtonColours(language) {
+
+  setButtonColours(language) {
     if (language == 'SOM') {
       this.somaliButtonColour = "primary"
       this.englishButtonColour = "default"

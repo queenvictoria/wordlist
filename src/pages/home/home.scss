@@ -1,3 +1,18 @@
 page-home {
+  ion-content {
+    background: transparent url("/assets/images/bgd.png");
+    background-size: cover
+  }
 
+  .scroll-content { padding: 0 !important }
+
+  #about {
+    background: rgba(255,255,255,0.9);
+    padding: 2em 1em;
+  }
+
+  #alphabet {
+    background: rgba(255,255,255,0.6);
+    padding: 16px
+  }
 }

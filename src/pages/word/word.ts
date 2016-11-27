@@ -91,14 +91,14 @@ export class WordPage {
     let word = this.entryService.getByIndex(index)
     if ( this.language == 'SOM' ) {
       return `<div class='swiper-slide'>
-            <div class="row"><strong> lx: ` + word.lx + ` </strong></div>
-            <div class="row">de: ` + word.de + `</div>
-        </div>`
+                <div class="row"><h1>` + word.lx + `</h1></div>
+                <div class="row"><p>` + word.de + `</p></div>
+              </div>`
     } else {
       return `<div class='swiper-slide'>
-            <div class="row"><strong> de: ` + word.de + ` </strong></div>
-            <div class="row">lx: ` + word.lx + `</div>
-        </div>`
+                <div class="row"><h1>` + word.de + `</h1></div>
+                <div class="row"><p>` + word.lx + `</p></div>
+              </div>`
     }
   }
 }

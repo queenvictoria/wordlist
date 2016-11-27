@@ -13,7 +13,7 @@ export class EntryService {
   entriesAll: any
 
   _language$: BehaviorSubject<string> = new BehaviorSubject("SOM")
-  language: string
+  language: string = 'SOM'
 
   constructor( public dbService: DbService ) {
   }
@@ -37,7 +37,7 @@ export class EntryService {
   }
 
   loadAll(letter) {
-    console.log("EntryService | loadAll", letter)
+    console.log("EntryService | loadAll", letter, this.language)
     this.dbService.getFromPouch().then( (data) => {
       this.entries = data
       this.entriesAll = data

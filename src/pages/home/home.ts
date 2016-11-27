@@ -24,10 +24,10 @@ export class HomePage {
 
     // console.log("HomePage")
 
-    // console.log("WordlistPage | subscribe to language$")
+    // console.log("HomePage | subscribe to language$")
     this.entryService.language$.subscribe( (language) => {
           this.language = language
-          console.log("language changed", language)
+          console.log("HomePage | has this language", language)
         })
     this.showAlphabet = false
   }
@@ -51,24 +51,28 @@ export class HomePage {
     */
     this.dbService.getFromPouch()
       .then( (entries) => {
+        console.log("HomePage | got from pouch", entries)
         this.syncStatus = 'local'
-        // this.dbService.getFromFb().then((entries) => {
-        // this.entryService.saveAll(entries)
-        // })
+        this.dbService.getFromFb().then((entries) => {
+        this.entryService.saveAll(entries)
+        })
         setTimeout(() => {
           this.whatToDoNext(entries)
         }, 0) // set this to smooth the UX
       })
       .catch( (err) => {
+        console.log("HomePage | no pouch, get from fb")
         this.syncStatus = 'sync'
         // start firebase
         this.dbService.getFromFb().then( (entries) => {
+        console.log("HomePage | got from fb", entries)
         // save to pouch
         this.entryService.saveAll(entries).then((entries) => {
-          this.whatToDoNext(entries)
-          })
+          console.log("entries?", entries)
+          this.dbService.getFromPouch().then((entries) => this.whatToDoNext(entries))
         })
       })
+    })
   }
 
   whatToDoNext(entries) {
@@ -82,27 +86,25 @@ export class HomePage {
 
 
   getAlphabetSOM(entries) {
-    console.log("getting alphabets SOM")
+    console.log("HomePage | getting alphabets SOM")
     let letters = []
     letters = entries.map((e) => {
       let i = e.lx.substring(0, 1).toUpperCase()
       return i
     })
     this.uniqueLettersSOM = this.uniques(letters).sort()
-    console.log("uniqueLettersSOM", this.uniqueLettersSOM)
   }
 
 
 
   getAlphabetENG(entries) {
-    console.log("getting alphabets ENG")
+    console.log("HomePage | getting alphabets ENG")
     let letters = []
     letters = entries.map((e) => {
       let i = e.de.substring(0, 1).toUpperCase()
       return i
     })
     this.uniqueLettersENG = this.uniques(letters).sort()
-    console.log("uniqueLettersENG", this.uniqueLettersENG)
   }
 
   uniques(arr) {
@@ -117,17 +119,15 @@ export class HomePage {
   // buttons
 
   getFromPouch() {
-    // console.log("HomePage | click get from pouch")
     this.dbService.getFromPouch()
-      // .then( (res) => console.log("got from pouch", res) )
-      // .catch( (err) => { console.log("getting from pouch failed", err) })
+      .then( (res) => console.log("got from pouch", res) )
+      .catch( (err) => { console.log("getting from pouch failed", err) })
   }
 
   getFromFb() {
-    // console.log("HomePage | click get from firebase")
     this.dbService.getFromFb()
-      // .then( (res) => console.log("got from firebase", res) )
-      // .catch( (err) => { console.log("getting from firebase failed", err) })
+      .then( (res) => console.log("got from firebase", res) )
+      .catch( (err) => { console.log("getting from firebase failed", err) })
   }
 
   goto(page) {
@@ -135,7 +135,6 @@ export class HomePage {
   }
 
   gotoWordlist(letter) {
-    // console.log("WordlistPage | gotoWord word", word)
     this.navCtrl.push(WordlistPage, {"letter":letter})
   }
 

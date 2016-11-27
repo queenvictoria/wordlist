@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Somali English dictionary</ion-title>
+    <ion-title>&nbsp;</ion-title>
     <language-chooser></language-chooser>
   </ion-navbar>
 
@@ -19,16 +19,14 @@
   <ion-list [virtualScroll]="entries$ | async">
     <ion-item *virtualItem="let word" (click)="gotoWord(word)">
 
-      {{word.id}}
-
       <div *ngIf="language=='SOM'">
-        <p>lx: <strong> {{ word.lx }} </strong></p>
-        <p>de: {{ word.de }} </p>
+        <h1> {{ word.lx }} </h1>
+        <h2> {{ word.de }} </h2>
       </div>
 
       <div *ngIf="language=='ENG'">
-        <p>de: <strong> {{ word.de }} </strong></p>
-        <p>ls: {{ word.lx }} </p>
+        <h1> {{ word.de }} </h1>
+        <h2> {{ word.lx }} </h2>
       </div>
 
     </ion-item>
