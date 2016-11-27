@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "somali-english-dictionary",
+  "author": "Ben",
+  "homepage": "",
   "private": true,
   "scripts": {
     "ionic:build": "ionic-app-scripts build",
@@ -23,7 +23,6 @@
     "ionic-native": "2.2.3",
     "ionicons": "3.0.0",
     "lodash": "^4.17.2",
-    "lokijs": "^1.4.1",
     "pouchdb": "^6.0.7",
     "rxjs": "5.0.0-beta.12",
     "swiper": "^3.4.0",
@@ -49,5 +48,5 @@
       "locator": "ios"
     }
   ],
-  "description": "Somali: An Ionic project"
+  "description": "Somali English dictionary"
 }
