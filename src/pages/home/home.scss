@@ -11,8 +11,56 @@ page-home {
     padding: 2em 1em;
   }
 
+  #status {
+    background: rgba(255,255,255,0.7);
+    padding: 2em 1em;
+    position: relative;
+  }
+
   #alphabet {
     background: rgba(255,255,255,0.6);
     padding: 16px
   }
+}
+
+
+@mixin center-in-parent($top:50%, $left:50%) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  transform: translate(-$left, -$top);
+  text-align: center;
+}
+
+
+// SIZES
+
+.loading-container {
+  position: relative;
+  margin:  0 -25px 0 -25px;
+  width: 50px;
+  height: 50px;
+  left: 50%;
+  @include center-in-parent;
+}
+
+.loading-container .loading {
+  width: 50px;
+  height: 50px;
+}
+
+// STYLES
+
+.loading.spin {
+  animation: rotate 0.8s infinite linear;
+  border: 2px solid #fff;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+// KEYFRAMES
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
 }

@@ -25,18 +25,15 @@ export class WordlistPage {
 
     // console.log("WordlistPage")
     this.letter = navParams.get("letter")
-    console.log("using letter", this.letter)
 
     // console.log("WordlistPage | subscribe to language$")
     this.entryService.language$.subscribe( (language) => {
           this.language = language
-          console.log("using language", language)
         })
 
     // console.log("WordlistPage | subscribe to entries$")
     this.entries$ = this.entryService.entries$
     this.entryService.entries$.subscribe( (entries) => {
-      console.log("WordlistPage | got entries", entries)
     } )
     this.entryService.loadAll(this.letter)
 

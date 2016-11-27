@@ -10,7 +10,8 @@ export class DbService {
 
   fdb: any // firebase
   pdb: any // pouchdb
-  entriesKey: string = "/entriesTest/" // or "/entries/"
+  // entriesKey: string = "/entriesTest/"
+  entriesKey: string = "/entries/"
 
   constructor(
     public af: AngularFire

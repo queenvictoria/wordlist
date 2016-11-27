@@ -51,7 +51,7 @@ export class HomePage {
     */
     this.dbService.getFromPouch()
       .then( (entries) => {
-        console.log("HomePage | got from pouch", entries)
+        console.log("HomePage | got from pouch")
         this.syncStatus = 'local'
         this.dbService.getFromFb().then((entries) => {
         this.entryService.saveAll(entries)
@@ -65,14 +65,16 @@ export class HomePage {
         this.syncStatus = 'sync'
         // start firebase
         this.dbService.getFromFb().then( (entries) => {
-        console.log("HomePage | got from fb", entries)
-        // save to pouch
-        this.entryService.saveAll(entries).then((entries) => {
-          console.log("entries?", entries)
-          this.dbService.getFromPouch().then((entries) => this.whatToDoNext(entries))
+          this.syncStatus = 'synced'
+          console.log("HomePage | got from fb", entries)
+          // save to pouch
+          this.entryService.saveAll(entries).then((entries) => {
+            this.syncStatus = 'saved'
+            console.log("entries?", entries)
+            this.dbService.getFromPouch().then((entries) => this.whatToDoNext(entries))
+          })
         })
       })
-    })
   }
 
   whatToDoNext(entries) {
@@ -86,7 +88,6 @@ export class HomePage {
 
 
   getAlphabetSOM(entries) {
-    console.log("HomePage | getting alphabets SOM")
     let letters = []
     letters = entries.map((e) => {
       let i = e.lx.substring(0, 1).toUpperCase()
@@ -98,7 +99,6 @@ export class HomePage {
 
 
   getAlphabetENG(entries) {
-    console.log("HomePage | getting alphabets ENG")
     let letters = []
     letters = entries.map((e) => {
       let i = e.de.substring(0, 1).toUpperCase()

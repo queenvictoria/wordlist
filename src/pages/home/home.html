@@ -9,25 +9,47 @@
 
 <ion-content padding>
 
+  <section id="about">
+
+    <header><h1>Somali English dictionary</h1></header>
+
+    <p>This dictionary is a project by Nadia Faragaab, a Melbourne-based Somali artist and community worker, and the Burji Arts Somali community arts organisation.</p>
+
+  </section>
+
+
   <div *ngIf="syncStatus=='ready'">
-    <p>checking for local data</p>
+    <section id="status">
+      <p>checking for local data</p>
+    </section>
   </div>
 
   <div *ngIf="syncStatus=='sync'">
-    <p>getting from firebase</p>
+    <section id="status">
+      <p>updating data</p>
+      <div class="loading-container">
+        <div class="loading spin"></div>
+      </div>
+    </section>
   </div>
 
 
-  <section id="about">
-    <header><h1>Somali English dictionary</h1></header>
-    <p>This dictionary is a project by Nadia Faragaab, a Melbourne-based Somali artist and community worker, and the Burji Arts Somali community arts organisation.</p>
-  </section>
 
   <section id="alphabet" *ngIf="showAlphabet">
-    <button ion-button (click)="gotoWordlist('all')"> all </button>
+
+    <button
+      ion-button
+      round
+      color="light"
+      (click)="gotoWordlist('all')">
+      all
+    </button>
+
     <div *ngIf="language=='SOM'">
       <button
         ion-button
+        round
+        color="light"
         *ngFor="let letter of uniqueLettersSOM"
        (click)="gotoWordlist(letter)">
        {{letter}}
@@ -36,6 +58,8 @@
     <div *ngIf="language=='ENG'">
       <button
         ion-button
+        round
+        color="light"
         *ngFor="let letter of uniqueLettersENG"
        (click)="gotoWordlist(letter)">
        {{letter}}
